@@ -1,0 +1,128 @@
+[
+ {
+  "id": "convaiinnovations/laya",
+  "pipeline_tag": "text-classification",
+  "likes": 3641,
+  "downloads": 0,
+  "trendingScore": 3368
+ },
+ {
+  "id": "Qwen/Qwen-Image-2.1",
+  "pipeline_tag": "text-to-image",
+  "likes": 2304,
+  "downloads": 42469,
+  "trendingScore": 2134
+ },
+ {
+  "id": "abenzerps/Qwen-Image-2.1-Uncensored-GGUF",
+  "pipeline_tag": "text-to-image",
+  "likes": 1758,
+  "downloads": 715906,
+  "trendingScore": 1535
+ },
+ {
+  "id": "XingChen-AGI/Xing4.0-29B-A4B",
+  "pipeline_tag": "text-generation",
+  "likes": 1684,
+  "downloads": 42950,
+  "trendingScore": 1226
+ },
+ {
+  "id": "prism-ml/Ternary-Bonsai-2-27B-gguf",
+  "pipeline_tag": "text-generation",
+  "likes": 2082,
+  "downloads": 3109078,
+  "trendingScore": 1112
+ },
+ {
+  "id": "Comfy-Org/Qwen-Image-2.1",
+  "pipeline_tag": null,
+  "likes": 724,
+  "downloads": 3266380,
+  "trendingScore": 687
+ },
+ {
+  "id": "Altworld/Hemmingway-1",
+  "pipeline_tag": "text-generation",
+  "likes": 667,
+  "downloads": 4978,
+  "trendingScore": 652
+ },
+ {
+  "id": "Edge0/Audio8-ASR-Infinite",
+  "pipeline_tag": "automatic-speech-recognition",
+  "likes": 551,
+  "downloads": 2853,
+  "trendingScore": 496
+ },
+ {
+  "id": "XiaomiMiMo/MiMo-V2.6-Pro-RL",
+  "pipeline_tag": "text-generation",
+  "likes": 494,
+  "downloads": 42062,
+  "trendingScore": 484
+ },
+ {
+  "id": "TaichuAI/ZDTaichu5.0-9B",
+  "pipeline_tag": "image-text-to-text",
+  "likes": 1047,
+  "downloads": 9498,
+  "trendingScore": 479
+ },
+ {
+  "id": "XiaomiMiMo/MiMo-V2.6-Distill-Qwen-9B",
+  "pipeline_tag": "image-text-to-text",
+  "likes": 469,
+  "downloads": 6652,
+  "trendingScore": 460
+ },
+ {
+  "id": "Qwen/Qwen3.8-27B",
+  "pipeline_tag": "image-text-to-text",
+  "likes": 16264,
+  "downloads": 6579319,
+  "trendingScore": 455
+ },
+ {
+  "id": "XiaomiMiMo/MiMo-V2.6-Flash-RL",
+  "pipeline_tag": "text-generation",
+  "likes": 456,
+  "downloads": 20473,
+  "trendingScore": 451
+ },
+ {
+  "id": "AlexWortega/openjev",
+  "pipeline_tag": "text-classification",
+  "likes": 574,
+  "downloads": 0,
+  "trendingScore": 436
+ },
+ {
+  "id": "deepseek-ai/DeepSeek-V4.1-Flash",
+  "pipeline_tag": "image-text-to-text",
+  "likes": 3748,
+  "downloads": 621396,
+  "trendingScore": 414
+ },
+ {
+  "id": "Lightricks/LTX-2.5",
+  "pipeline_tag": "image-to-video",
+  "likes": 5094,
+  "downloads": 1598133,
+  "trendingScore": 366
+ },
+ {
+  "id": "ISTA-DASLab/Qwen3.8-27B-GSQ-RCO-GGUF",
+  "pipeline_tag": "image-text-to-text",
+  "likes": 1693,
+  "downloads": 1510016,
+  "trendingScore": 353
+ },
+ {
+  "id": "nvidia/Nemotron-3-Diarization",
+  "pipeline_tag": "voice-activity-detection",
+  "likes": 332,
+  "downloads": 11459,
+  "trendingScore": 324
+ }
+]
