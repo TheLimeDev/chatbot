@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Huggee-Farm — walk the farm, download RAM, visit the Farmers Market</title>
+<link rel="icon" href="assets/hf-logo.svg">
+<style>
+  html,body{margin:0;height:100%;overflow:hidden;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:#9fd3f5;user-select:none}
+  canvas{display:block}
+  .glass{background:rgba(255,251,240,.82);border-radius:14px;box-shadow:0 4px 18px rgba(40,30,0,.18);backdrop-filter:blur(8px);color:#4a3210}
+  #hud{position:fixed;top:14px;left:14px;display:flex;gap:10px;align-items:center;padding:6px 12px 6px 6px}
+  #hud .logo{width:38px;height:38px;border-radius:10px}
+  #hud h1{margin:0;font-size:16px;color:#5a3a12}
+  #hud p{margin:1px 0 0;font-size:11px}#hud a{color:#9a5a0b;text-decoration:none;font-weight:600}
+  .av{width:13px;height:13px;border-radius:50%;vertical-align:-2px}
+  #topRight{position:fixed;top:14px;right:14px;display:flex;gap:8px;align-items:center}
+  #signBtn{border:0;padding:9px 14px;font:600 13px system-ui;cursor:pointer;color:#4a3210}
+  #signBtn .av{width:20px;height:20px;vertical-align:-5px}
+  #moneyBox{padding:7px 14px;display:flex;align-items:center;gap:8px;font-weight:800;font-size:20px}
+  .coin{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff3a0,#f5c230 60%,#b8860b);color:#8a5d05;font-size:13px;display:flex;align-items:center;justify-content:center;font-weight:900}
+  .pulse{animation:p .35s}@keyframes p{50%{transform:scale(1.12)}}
+  .modal{position:fixed;inset:0;background:rgba(10,8,4,.45);display:none;align-items:center;justify-content:center;z-index:5;backdrop-filter:blur(3px)}
+  .modal .box{position:relative;width:min(440px,90vw);max-height:84vh;overflow:auto;background:#fbf5e6;border-radius:20px;padding:24px;color:#3a2a10;box-shadow:0 20px 60px #0007;text-align:center}
+  .modal h2{margin:6px 0 10px;font:800 22px system-ui}.modal p{font-size:13px;line-height:1.5}
+  .hfl{width:54px}.closeX{position:absolute;top:10px;right:12px;border:0;background:none;font-size:24px;cursor:pointer;color:inherit}
+  .hfBtn{display:block;width:100%;padding:11px;border:0;border-radius:12px;background:#1f1f1f;color:#fff;font:700 14px system-ui;cursor:pointer;margin:8px 0}
+  #signUser{width:100%;box-sizing:border-box;padding:11px;border:1px solid #d8c8a4;border-radius:12px;font:14px system-ui}
+  #signMsg{font-size:12px;color:#a0442a;min-height:16px}.ghost{border:1px solid #c9b48a;background:none;border-radius:10px;padding:7px 14px;cursor:pointer}
+  #signedName .av{width:40px;height:40px;vertical-align:middle}
+  .box.dark{background:#140d1c;color:#e8dcf8;border:2px solid #ff3dbb;box-shadow:0 0 40px #ff3dbb66}
+  .neonT{color:#ffd0f0;text-shadow:0 0 12px #ff3dbb,0 0 24px #ff3dbb;font-family:"Brush Script MT",cursive,system-ui!important;font-size:34px!important}
+  .shady{color:#b9a8d0;font-style:italic}
+  .sellRow{display:flex;justify-content:space-between;align-items:center;gap:10px;text-align:left;padding:9px 10px;border-radius:10px;background:#1f1530;margin:6px 0}
+  .sellRow b{display:block;font-size:13px;word-break:break-all;color:#fff}.sellRow small{color:#a898c0;font-size:11px}
+  .sellRow button,.neonBtn{border:0;border-radius:9px;padding:8px 12px;background:#ff3dbb;color:#fff;font:800 13px system-ui;cursor:pointer;white-space:nowrap}
+  .sellRow.sold{opacity:.45}.sellRow button:disabled,.neonBtn:disabled{background:#4a3a5a;cursor:default}
+  .neonBtn{margin-top:12px;width:100%;background:#44aadd}
+  #hint{position:fixed;left:50%;bottom:34px;transform:translateX(-50%);background:rgba(30,22,8,.72);color:#ffe27a;padding:8px 16px;border-radius:12px;font-weight:600;font-size:14px;transition:opacity .25s;opacity:0;pointer-events:none}
+  #toast{position:fixed;left:50%;top:18%;transform:translateX(-50%);font-size:22px;font-weight:800;color:#fff;text-shadow:0 2px 10px #0008;transition:opacity .4s;opacity:0;pointer-events:none}
+  #help{position:fixed;left:14px;bottom:14px;padding:8px 12px;font-size:12px;line-height:1.7;opacity:0;transition:opacity .6s;pointer-events:none}
+  #help.show{opacity:1}
+  kbd{background:#fff;border:1px solid #c9b48a;border-bottom-width:2px;border-radius:5px;padding:0 5px;font-weight:700;font-size:11px}
+  #stallPanel{position:fixed;inset:0;background:rgba(10,8,4,.45);display:none;align-items:center;justify-content:center;z-index:5;backdrop-filter:blur(3px)}
+  #stallIn{width:min(760px,92vw);background:#fbf5e6;border-radius:20px;overflow:hidden;display:flex;box-shadow:0 20px 60px #0007;color:#3a2a10}
+  #stallIn img{width:45%;object-fit:cover;background:#fff}
+  #stallIn .txt{padding:22px;flex:1}
+  #stallIn h2{margin:0;font:800 30px Georgia,serif;color:#2f6f2a}
+  .by{font-size:13px;margin:4px 0 10px}.by a,.links a{color:#9a5a0b;font-weight:700;text-decoration:none}
+  #stallIn p{font-size:14px;line-height:1.5;margin:0 0 8px}#stallIn p.small{font-size:12px;color:#7a6a4a}
+  #adopt{width:100%;margin-top:6px;padding:12px;border:0;border-radius:12px;background:#3f9a4a;color:#fff;font-weight:800;font-size:16px;cursor:pointer}
+  #adopt:disabled{background:#9aa;cursor:default}
+  #stallMsg{font-size:12px;margin:8px 0;min-height:16px;color:#6a5a3a}
+  .links{display:flex;justify-content:space-between;align-items:center;font-size:13px}
+  #closeStall{background:none;border:1px solid #c9b48a;border-radius:8px;padding:6px 10px;cursor:pointer;font-weight:600;color:#5a3a12}
+  #loading{position:fixed;inset:0;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:center;background:#9fd3f5;font-size:20px;color:#5a3a12;z-index:9;transition:opacity .8s}
+  #loading img{width:120px;border-radius:26px}
+  @media (max-width:640px){#stallIn{flex-direction:column}#stallIn img{width:100%;height:180px}}
+</style>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/jsm/"}}</script>
+</head>
+<body>
+<div id="loading"><img src="assets/monster-code.jpg" alt="">Planting the Huggee-Farm...</div>
+<div id="hud" class="glass">
+  <img class="logo" src="assets/hugging-farm.jpg" alt="Hugging-Farm">
+  <div><h1>Huggee-Farm</h1>
+    <p><a href="https://huggingface.co/Hugging-Farm" target="_blank">Hugging-Farm</a> · <a href="https://huggingface.co/Monster-Code" target="_blank"><img src="assets/monster-code.jpg" class="av"> Monster-Code</a> · <span id="clock"></span></p></div>
+</div>
+<div id="topRight"><button id="signBtn" class="glass">Sign in with Hugging Face</button><div id="moneyBox" class="glass"><div class="coin">$</div><span id="money">0</span></div></div>
+<div id="hint"></div><div id="toast"></div>
+<div id="help" class="glass show">
+  <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> walk · <kbd>Shift</kbd> run · <kbd>Space</kbd> jump (twice to flip) · <kbd>F</kbd> dance · <kbd>E</kbd> interact · <kbd>H</kbd> help<br>
+  Collect coins. Spend them at the Farmers Market. Some say there is a secret market somewhere behind the barn...
+</div>
+<div id="stallPanel"><div id="stallIn">
+  <img src="assets/boomslang.png" alt="Boomslang">
+  <div class="txt">
+    <h2>Boomslang</h2><div class="by">by <a href="https://huggingface.co/Monster-Code" target="_blank">Monster-Code</a> · 3B · Apache-2.0</div>
+    <p>A compact 3-billion-parameter model, fine-tuned from Qwen2.5-3B-Instruct for step-by-step math and logic. It still chats warmly when you just say hi.</p>
+    <p class="small">Trained on about 17,500 reasoning samples (OpenR1-Math, GSM8K). Ships as one ~6.1 GB model.safetensors plus a GGUF for Ollama and LM Studio.</p>
+    <button id="adopt"></button>
+    <div id="stallMsg"></div>
+    <div class="links"><a href="https://huggingface.co/Monster-Code/Boomslang" target="_blank">View on Hugging Face</a><button id="closeStall">Close (E)</button></div>
+  </div>
+</div></div>
+<div id="signPanel" class="modal"><div class="box">
+  <button class="closeX">×</button>
+  <img src="assets/hf-logo.svg" class="hfl"><h2>Sign in with Hugging Face</h2>
+  <div id="signForm">
+    <button id="signOAuth" class="hfBtn">Sign in with Hugging Face</button>
+    <p>Type your Hugging Face username. The farm loads your models once, and you can refresh them once every 24 hours.</p>
+    <input id="signUser" placeholder="e.g. Monster-Code" autocomplete="off"><button id="signGo" class="hfBtn">Load my models</button>
+  </div>
+  <div id="signedIn"><p id="signedName"></p><button id="signOut" class="ghost">Sign out</button></div>
+  <div id="signMsg"></div>
+</div></div>
+<div id="sellPanel" class="modal"><div class="box dark">
+  <button class="closeX">×</button>
+  <h2 class="neonT">Not-so-Huggy Market</h2><p class="shady">"Got models? I buy 'em. No questions asked."</p>
+  <div id="sellList"></div>
+  <button id="refresh" class="neonBtn"></button>
+</div></div>
+<script type="module" src="game.js"></script>
+</body>
+</html>
